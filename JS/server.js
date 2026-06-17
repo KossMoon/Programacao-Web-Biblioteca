@@ -1,27 +1,12 @@
-const express = require('express')
-const app = express()
-const port = 3000
-app.use(express.urlencoded({extended:true}))
+const express = require('express');
+const app = express();
 
-//criar uma ação para servir arquivos estáticos (public)
-app.use(express.static('public'));
+app.use(express.json());
 
-//rotas (métodos: GET, POST, PUT e DELETE)
-app.get('/', (req, res) => {
-  //res.send('Hello World!')
-  res.sendFile(__dirname + '/public/index.html');
-})
+app.use(express.static(__dirname));
 
-app.get('/sobre', (req, res) => {
-  //res.send('Página Sobre!')
-  res.sendFile(__dirname + '/public/sobre.html');
-});
+app.use('/usuarios', require('../ROUTES/usuarioRoutes'));
+app.use('/livros', require('../ROUTES/livroRoutes'));
+app.use('/emprestimos', require('../ROUTES/emprestimoRoutes'));
 
-app.post('/contato', (req, res)=>{
-    const {nome, email} = req.body;
-    res.send(`Dados cadastrados com sucesso: ${nome}; ${email}`);
-})
-
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
+app.listen(3000, () => console.log('Servidor rodando na porta 3000'));
