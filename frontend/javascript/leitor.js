@@ -15,7 +15,11 @@ function sair() {
 
 function formatarData(data) {
   if (!data) return '—';
-  const [ano, mes, dia] = data.split('-');
+  
+  const dataLimpa = data.split('T')[0]; 
+  
+  const [ano, mes, dia] = dataLimpa.split('-');
+  
   return `${dia}/${mes}/${ano}`;
 }
 
