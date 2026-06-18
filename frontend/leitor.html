@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Biblioteca — Painel do Leitor</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body { font-family: 'Segoe UI', sans-serif; background: #f0f4f8; color: #2d3748; }
+
+    nav {
+      background: #1a3a5c;
+      color: #fff;
+      padding: 0 32px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    nav h1 { font-size: 17px; font-weight: 600; }
+    .nav-right { display: flex; align-items: center; gap: 16px; }
+    .nav-right span { font-size: 13px; color: #a8c4e0; }
+
+    .btn-sair {
+      background: none;
+      border: 1px solid #a8c4e0;
+      color: #a8c4e0;
+      padding: 6px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 13px;
+      transition: all 0.2s;
+    }
+
+    .btn-sair:hover { background: #a8c4e0; color: #1a3a5c; }
+
+    main { max-width: 1100px; margin: 0 auto; padding: 32px 24px; }
+
+    .section {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      margin-bottom: 28px;
+      overflow: hidden;
+    }
+
+    .section-header {
+      padding: 18px 24px;
+      border-bottom: 1px solid #e5e9ef;
+    }
+
+    .section-header h2 { font-size: 16px; font-weight: 600; color: #1a3a5c; }
+
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    thead tr { background: #f7f9fb; }
+    th { padding: 10px 14px; text-align: left; font-size: 11px; font-weight: 600; color: #6b7a8d; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid #e5e9ef; }
+    td { padding: 12px 14px; border-bottom: 1px solid #f0f4f8; vertical-align: middle; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: #fafbfc; }
+
+    .btn {
+      padding: 6px 14px;
+      border: none;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-primary  { background: #1a3a5c; color: #fff; }
+    .btn-primary:hover { background: #14304d; }
+    .btn-warning  { background: #fffbea; color: #92610a; border: 1px solid #fde68a; }
+    .btn-warning:hover { background: #92610a; color: #fff; }
+    .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    .badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .badge-ativo     { background: #e8f5e9; color: #2e7d32; }
+    .badge-devolvido { background: #e3f2fd; color: #1565c0; }
+    .badge-atrasado  { background: #fff3e0; color: #e65100; }
+
+    .vazio { text-align: center; padding: 32px; color: #6b7a8d; font-size: 14px; }
+
+    .msg {
+      padding: 10px 14px;
+      border-radius: 7px;
+      font-size: 13px;
+      margin: 16px 24px 0;
+      display: none;
+    }
+
+    .msg.erro    { background: #fff0f0; color: #c0392b; border: 1px solid #f5c6c6; display: block; }
+    .msg.sucesso { background: #f0fff4; color: #276749; border: 1px solid #b2dfcc; display: block; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <h1>📚 Sistema de Biblioteca</h1>
+  <div class="nav-right">
+    <span id="nav-nome"></span>
+    <button class="btn-sair" onclick="sair()">Sair</button>
+  </div>
+</nav>
+
+<main>
+
+  <div id="msg-catalogo" class="msg"></div>
+
+  <div class="section">
+    <div class="section-header">
+      <h2>Catálogo de livros</h2>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th><th>Título</th><th>Autor</th><th>Ano</th><th>Disponíveis</th><th>Ação</th>
+        </tr>
+      </thead>
+      <tbody id="tbody-livros">
+        <tr><td colspan="6" class="vazio">Carregando...</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div id="msg-emprestimo" class="msg"></div>
+
+  <div class="section">
+    <div class="section-header">
+      <h2>Meus empréstimos</h2>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Livro</th><th>Data do empréstimo</th><th>Devolução prevista</th><th>Status</th><th>Ação</th>
+        </tr>
+      </thead>
+      <tbody id="tbody-emprestimos">
+        <tr><td colspan="5" class="vazio">Carregando...</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</main>
+
+<script src="/javascript/leitor.js"></script>
+</body>
+</html>

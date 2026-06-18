@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Biblioteca — Painel do Bibliotecário</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body { font-family: 'Segoe UI', sans-serif; background: #f0f4f8; color: #2d3748; }
+
+    nav {
+      background: #1a3a5c;
+      color: #fff;
+      padding: 0 32px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    nav h1 { font-size: 17px; font-weight: 600; }
+    .nav-right { display: flex; align-items: center; gap: 16px; }
+    .nav-right span { font-size: 13px; color: #a8c4e0; }
+
+    .btn-sair {
+      background: none;
+      border: 1px solid #a8c4e0;
+      color: #a8c4e0;
+      padding: 6px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 13px;
+      transition: all 0.2s;
+    }
+
+    .btn-sair:hover { background: #a8c4e0; color: #1a3a5c; }
+
+    main { max-width: 1100px; margin: 0 auto; padding: 32px 24px; }
+
+    .section { background: #fff; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); margin-bottom: 28px; overflow: hidden; }
+
+    .section-header {
+      padding: 18px 24px;
+      border-bottom: 1px solid #e5e9ef;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .section-header h2 { font-size: 16px; font-weight: 600; color: #1a3a5c; }
+
+    .section-body { padding: 24px; }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr auto;
+      gap: 12px;
+      align-items: end;
+    }
+
+    .field label {
+      display: block;
+      font-size: 11px;
+      font-weight: 600;
+      color: #4a5568;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 5px;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 9px 12px;
+      border: 1px solid #d1d9e0;
+      border-radius: 7px;
+      font-size: 14px;
+      color: #2d3748;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    input:focus, select:focus { border-color: #1a3a5c; }
+
+    .btn {
+      padding: 9px 18px;
+      border: none;
+      border-radius: 7px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .btn-primary   { background: #1a3a5c; color: #fff; }
+    .btn-primary:hover { background: #14304d; }
+    .btn-danger    { background: #fff0f0; color: #c0392b; border: 1px solid #f5c6c6; }
+    .btn-danger:hover { background: #c0392b; color: #fff; }
+    .btn-success   { background: #f0fff4; color: #276749; border: 1px solid #b2dfcc; }
+    .btn-success:hover { background: #276749; color: #fff; }
+    .btn-edit      { background: #fffbea; color: #92610a; border: 1px solid #fde68a; }
+    .btn-edit:hover { background: #92610a; color: #fff; }
+    .btn-sm        { padding: 5px 12px; font-size: 12px; }
+
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    thead tr { background: #f7f9fb; }
+    th { padding: 10px 14px; text-align: left; font-size: 11px; font-weight: 600; color: #6b7a8d; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid #e5e9ef; }
+    td { padding: 12px 14px; border-bottom: 1px solid #f0f4f8; vertical-align: middle; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: #fafbfc; }
+
+    .badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .badge-ativo    { background: #e8f5e9; color: #2e7d32; }
+    .badge-devolvido { background: #e3f2fd; color: #1565c0; }
+    .badge-atrasado { background: #fff3e0; color: #e65100; }
+
+    .acoes { display: flex; gap: 6px; }
+
+    .msg {
+      padding: 10px 14px;
+      border-radius: 7px;
+      font-size: 13px;
+      margin-bottom: 16px;
+      display: none;
+    }
+
+    .msg.erro    { background: #fff0f0; color: #c0392b; border: 1px solid #f5c6c6; display: block; }
+    .msg.sucesso { background: #f0fff4; color: #276749; border: 1px solid #b2dfcc; display: block; }
+
+    .vazio { text-align: center; padding: 32px; color: #6b7a8d; font-size: 14px; }
+
+    .overlay {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.4);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .overlay.ativo { display: flex; }
+
+    .modal {
+      background: #fff;
+      border-radius: 12px;
+      padding: 28px;
+      width: 460px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.15);
+    }
+
+    .modal h3 { font-size: 16px; font-weight: 600; color: #1a3a5c; margin-bottom: 20px; }
+    .modal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .modal-grid .full { grid-column: 1 / -1; }
+    .modal-footer { display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; }
+    .btn-cancel { background: #f0f4f8; color: #4a5568; }
+    .btn-cancel:hover { background: #e2e8f0; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <h1>📚 Sistema de Biblioteca</h1>
+  <div class="nav-right">
+    <span id="nav-nome"></span>
+    <button class="btn-sair" onclick="sair()">Sair</button>
+  </div>
+</nav>
+
+<main>
+
+  <div class="section">
+    <div class="section-header">
+      <h2>Adicionar livro</h2>
+    </div>
+    <div class="section-body">
+      <div id="msg-livro" class="msg"></div>
+      <div class="form-grid">
+        <div class="field">
+          <label>Título</label>
+          <input type="text" id="novo-titulo" placeholder="Título do livro">
+        </div>
+        <div class="field">
+          <label>Autor</label>
+          <input type="text" id="novo-autor" placeholder="Autor">
+        </div>
+        <div class="field">
+          <label>Ano</label>
+          <input type="number" id="novo-ano" placeholder="2024">
+        </div>
+        <div class="field">
+          <label>Quantidade</label>
+          <input type="number" id="novo-qtd" placeholder="1" min="1">
+        </div>
+        <div class="field">
+          <label>&nbsp;</label>
+          <button class="btn btn-primary" onclick="adicionarLivro()">Adicionar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <h2>Acervo</h2>
+    </div>
+    <div id="tabela-livros-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th><th>Título</th><th>Autor</th><th>Ano</th><th>Disponíveis</th><th>Ações</th>
+          </tr>
+        </thead>
+        <tbody id="tbody-livros">
+          <tr><td colspan="6" class="vazio">Carregando...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <h2>Empréstimos ativos</h2>
+    </div>
+    <div id="msg-emprestimo" class="msg" style="margin: 16px 24px 0;"></div>
+    <table>
+      <thead>
+        <tr>
+          <th>Leitor</th><th>Livro</th><th>Empréstimo</th><th>Devolução prevista</th><th>Status</th><th>Ação</th>
+        </tr>
+      </thead>
+      <tbody id="tbody-emprestimos">
+        <tr><td colspan="6" class="vazio">Carregando...</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</main>
+
+<div class="overlay" id="modal-overlay">
+  <div class="modal">
+    <h3>Editar livro</h3>
+    <input type="hidden" id="edit-id">
+    <div class="modal-grid">
+      <div class="field full">
+        <label>Título</label>
+        <input type="text" id="edit-titulo">
+      </div>
+      <div class="field full">
+        <label>Autor</label>
+        <input type="text" id="edit-autor">
+      </div>
+      <div class="field">
+        <label>Ano</label>
+        <input type="number" id="edit-ano">
+      </div>
+      <div class="field">
+        <label>Quantidade</label>
+        <input type="number" id="edit-qtd">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-cancel" onclick="fecharModal()">Cancelar</button>
+      <button class="btn btn-primary" onclick="salvarEdicao()">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<script src="/javascript/bibliotecario.js"></script>
+</body>
+</html>

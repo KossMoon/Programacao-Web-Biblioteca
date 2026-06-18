@@ -1,4 +1,22 @@
 {
+  "name": "programacao-web-biblioteca",
+  "version": "1.0.0",
+  "description": "Projeto final de Programação Web",
+  "homepage": "https://github.com/KossMoon/Programacao-Web-Biblioteca#readme",
+  "bugs": {
+    "url": "https://github.com/KossMoon/Programacao-Web-Biblioteca/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KossMoon/Programacao-Web-Biblioteca.git"
+  },
+  "license": "ISC",
+  "author": "Elise Akie Sugiyama e Marco Antônio Moreira Gonçalves",
+  "type": "commonjs",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
   "dependencies": {
     "express": "^5.2.1",
     "mysql2": "^3.22.5"
