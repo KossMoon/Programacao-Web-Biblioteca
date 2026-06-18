@@ -99,6 +99,8 @@
     .btn-danger:hover { background: #c0392b; color: #fff; }
     .btn-success   { background: #f0fff4; color: #276749; border: 1px solid #b2dfcc; }
     .btn-success:hover { background: #276749; color: #fff; }
+    .btn:disabled  { opacity: 0.4; cursor: not-allowed; }
+    .btn:disabled:hover { background: inherit; color: inherit; }
     .btn-edit      { background: #fffbea; color: #92610a; border: 1px solid #fde68a; }
     .btn-edit:hover { background: #92610a; color: #fff; }
     .btn-sm        { padding: 5px 12px; font-size: 12px; }
@@ -233,11 +235,27 @@
     <table>
       <thead>
         <tr>
-          <th>Leitor</th><th>Livro</th><th>Empréstimo</th><th>Devolução prevista</th><th>Status</th><th>Ação</th>
+          <th>Leitor</th><th>Livro</th><th>Empréstimo</th><th>Devolução prevista</th><th>Status</th><th>Solicitação</th><th>Ação</th>
         </tr>
       </thead>
       <tbody id="tbody-emprestimos">
-        <tr><td colspan="6" class="vazio">Carregando...</td></tr>
+        <tr><td colspan="7" class="vazio">Carregando...</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <h2>Histórico de empréstimos</h2>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Leitor</th><th>Livro</th><th>Empréstimo</th><th>Devolução prevista</th><th>Devolução real</th><th>Status</th><th>Alterar status</th>
+        </tr>
+      </thead>
+      <tbody id="tbody-historico">
+        <tr><td colspan="7" class="vazio">Carregando...</td></tr>
       </tbody>
     </table>
   </div>

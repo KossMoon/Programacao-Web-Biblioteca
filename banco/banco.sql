@@ -39,3 +39,9 @@ CREATE TABLE emprestimos (
         REFERENCES usuarios(id)
         ON DELETE CASCADE
 );
+
+
+ALTER TABLE emprestimos ADD COLUMN devolucao_solicitada BOOLEAN NOT NULL DEFAULT FALSE;
+
+SELECT id, titulo, autor, ano_publicacao, quantidade_disponivel FROM livros;
+SELECT id, nome, email, senha, perfil FROM usuarios;
