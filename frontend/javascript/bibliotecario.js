@@ -13,7 +13,6 @@ function sair() {
   window.location.href = '/index.html';
 }
 
-// (odeio o sistema americano e apague])
 function formatarData(data) {
   if (!data) return '—';
   const [ano, mes, dia] = data.split('-');
@@ -31,7 +30,6 @@ function mostrarMensagem(id, texto, tipo) {
   el.className = `msg ${tipo}`;
 }
 
-// guarda a lista de livros carregada para preencher o modal de edição sem precisar de outra requisição (apagar por favor)
 let livrosCache = [];
 
 async function carregarLivros() {
@@ -88,8 +86,6 @@ async function removerLivro(id) {
   carregarLivros();
 }
 
-// ---------- libro editor(apaga pls) ----------
-
 function abrirModalEdicao(id) {
   const livro = livrosCache.find(l => l.id === id);
   if (!livro) return;
@@ -131,8 +127,6 @@ async function salvarEdicao() {
     mostrarMensagem('msg-livro', data.erro || 'Erro ao atualizar livro.', 'erro');
   }
 }
-
-// ---------- Empréstimos ativos(apaga antes da apresentacao) ----------
 
 async function carregarEmprestimos() {
   const res = await fetch(`${API}/emprestimos`, { headers: getHeaders() });
@@ -186,8 +180,6 @@ async function aprovarDevolucao(id, livro_id) {
   carregarLivros();
   carregarHistorico();
 }
-
-// ---------- Histórico de Emprestamentos (apaga antes da apresentacao) ----------
 
 async function carregarHistorico() {
   const res = await fetch(`${API}/emprestimos`, { headers: getHeaders() });
