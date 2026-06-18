@@ -94,19 +94,42 @@ router.put('/:id/solicitar-devolucao', verificarLeitor, (req, res) => {
 });
 
 router.put('/:id/status', verificarBibliotecario, (req, res) => {
-    const {status} = req.body;
+    const { status } = req.body;
+    const id = Number(req.params.id);
     const statusValidos = ['ativo', 'devolvido', 'atrasado'];
 
     if (!statusValidos.includes(status)) {
-        return res.status(400).json({erro: 'Status inválido.'});
+        return res.status(400).json({ erro: 'Status inválido.' });
     }
 
-    const sql = `UPDATE emprestimos SET status = ? WHERE id = ?`;
-    db.query(sql, [status, req.params.id], (err) => {
-        if (err) return res.status(500).json({erro: 'Erro ao alterar status.'});
+    db.query('SELECT status, livro_id FROM emprestimos WHERE id = ?', [id], (err, result) => {
+        if (err) return res.status(500).json({ erro: 'Erro ao buscar empréstimo atual.' });
+        if (result.length === 0) return res.status(404).json({ erro: 'Empréstimo não encontrado.' });
 
-        solicitacoesDevolucao.delete(Number(req.params.id));
-        res.status(200).json({mensagem: 'Status atualizado com sucesso.'});
+        const statusAnterior = result[0].status;
+        const libroId = result[0].livro_id;
+
+        if (statusAnterior === status) {
+            return res.status(200).json({ mensagem: 'O status já é o informado.' });
+        }
+
+        const sqlUpdate = `UPDATE emprestimos SET status = ? WHERE id = ?`;
+        db.query(sqlUpdate, [status, id], (err) => {
+            if (err) return res.status(500).json({ erro: 'Erro ao alterar status.' });
+
+            solicitacoesDevolucao.delete(id);
+
+            const foiDevolvido = (statusAnterior === 'ativo' || statusAnterior === 'atrasado') && status === 'devolvido';
+            const foiReativado = statusAnterior === 'devolvido' && (status === 'ativo' || status === 'atrasado');
+
+            if (foiDevolvido) {
+                db.query('UPDATE livros SET quantidade_disponivel = quantidade_disponivel + 1 WHERE id = ?', [libroId]);
+            } else if (foiReativado) {
+                db.query('UPDATE livros SET quantidade_disponivel = quantidade_disponivel - 1 WHERE id = ?', [libroId]);
+            }
+
+            res.status(200).json({ mensagem: 'Status e estoque atualizados com sucesso.' });
+        });
     });
 });
  
