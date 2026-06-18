@@ -64,7 +64,6 @@ router.put('/:id/devolver', verificarBibliotecario, (req, res) => {
     const {data_devolucao_real, livro_id} = req.body;
     const id = Number(req.params.id);
 
-    // Só permite registrar a devolução se o leitor tiver solicitado antes(apagar dps, demorei pra perceber q isso tava faltando)
     if (!solicitacoesDevolucao.has(id)) {
         return res.status(400).json({erro: 'O leitor ainda não solicitou a devolução deste empréstimo.'});
     }
@@ -82,9 +81,7 @@ router.put('/:id/devolver', verificarBibliotecario, (req, res) => {
 router.put('/:id/solicitar-devolucao', verificarLeitor, (req, res) => {
     const id = Number(req.params.id);
 
-    // Confere se o empréstimo existe, pertence a esse leitor e ainda está em aberto,
-    // antes de marcar a solicitação (sem precisar de UPDATE no banco(apagar apos analises)).
-    const sql = `SELECT id FROM emprestimos WHERE id = ? AND leitor_id = ? AND status IN ('ativo', 'atrasado')`;
+     const sql = `SELECT id FROM emprestimos WHERE id = ? AND leitor_id = ? AND status IN ('ativo', 'atrasado')`;
     db.query(sql, [id, req.usuarioId], (err, result) => {
         if (err) return res.status(500).json({erro: 'Erro ao solicitar devolução.'});
         if (result.length === 0) {
